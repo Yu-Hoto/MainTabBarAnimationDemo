@@ -22,26 +22,39 @@ class MainTabBarController: UITabBarController {
             let fromIndex = tabViewControllers.firstIndex(of: selectedViewController),
             toIndex != fromIndex
         else { return }
+        fromView.superview?.backgroundColor = UIColor.white
         
         guard let superview = fromView.superview else { return }
+        superview.layer.shouldRasterize = true
         superview.addSubview(toView)
         
         let screenWidth = UIScreen.main.bounds.size.width
         let scrollRight = toIndex > fromIndex
-        let offset = (scrollRight ? screenWidth : -screenWidth)
+        let offset = (scrollRight ? screenWidth / 4 : -screenWidth / 4)
         
-        view.isUserInteractionEnabled = false
+        initializeToView(toView, isScrollRight: scrollRight, offSet: offset)
         
-        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [.curveEaseOut, .allowAnimatedContent], animations: {
+        UIView.animate(withDuration: 0.25, delay: 0.0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [.curveEaseOut, .allowAnimatedContent], animations: {
             
-            fromView.center = CGPoint(x: fromView.center.x - offset, y: fromView.center.y)
-            toView.center   = CGPoint(x: toView.center.x - offset, y: toView.center.y)
-        }, completion: { finished in
+            fromView.alpha = 0
+            fromView.center.x = fromView.center.x - offset
+        }, completion: { _ in
             
-            fromView.removeFromSuperview()
-            self.selectedIndex = toIndex
-            self.view.isUserInteractionEnabled = true
+            toView.center.x = toView.center.x + offset
+            UIView.animate(withDuration: 0.25, delay: 0.0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [.curveEaseIn, .allowAnimatedContent], animations: {
+                
+                toView.alpha = 1
+                toView.center.x = toView.center.x - offset
+            }, completion: { _ in
+                
+                fromView.removeFromSuperview()
+                self.selectedIndex = toIndex
+            })
         })
+    }
+    
+    func initializeToView(_ toView: UIView, isScrollRight: Bool, offSet: CGFloat) {
+        toView.alpha = 0
     }
 }
 

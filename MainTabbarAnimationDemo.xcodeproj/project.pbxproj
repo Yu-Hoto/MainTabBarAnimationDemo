@@ -17,7 +17,6 @@
 		202511F223C5B75700A018EA /* MainTabbarAnimationDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202511F123C5B75700A018EA /* MainTabbarAnimationDemoTests.swift */; };
 		202511FD23C5B75700A018EA /* MainTabbarAnimationDemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202511FC23C5B75700A018EA /* MainTabbarAnimationDemoUITests.swift */; };
 		2025120B23C5B8DC00A018EA /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2025120A23C5B8DC00A018EA /* MainTabBarController.swift */; };
-		2025121123C5D02A00A018EA /* Overlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2025121023C5D02A00A018EA /* Overlay.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,7 +53,6 @@
 		202511FC23C5B75700A018EA /* MainTabbarAnimationDemoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabbarAnimationDemoUITests.swift; sourceTree = "<group>"; };
 		202511FE23C5B75700A018EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2025120A23C5B8DC00A018EA /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
-		2025121023C5D02A00A018EA /* Overlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Overlay.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,7 +112,6 @@
 				202511E523C5B75600A018EA /* LaunchScreen.storyboard */,
 				202511E823C5B75600A018EA /* Info.plist */,
 				2025120A23C5B8DC00A018EA /* MainTabBarController.swift */,
-				2025121023C5D02A00A018EA /* Overlay.swift */,
 			);
 			path = MainTabbarAnimationDemo;
 			sourceTree = "<group>";
@@ -272,7 +269,6 @@
 				202511DD23C5B75500A018EA /* FirstViewController.swift in Sources */,
 				2025120B23C5B8DC00A018EA /* MainTabBarController.swift in Sources */,
 				202511D923C5B75500A018EA /* AppDelegate.swift in Sources */,
-				2025121123C5D02A00A018EA /* Overlay.swift in Sources */,
 				202511DB23C5B75500A018EA /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
