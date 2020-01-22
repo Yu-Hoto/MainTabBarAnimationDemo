@@ -28,9 +28,9 @@ class MainTabBarController: UITabBarController {
         superview.layer.shouldRasterize = true
         superview.addSubview(toView)
         
-        let screenWidth = UIScreen.main.bounds.size.width
+        let screenWidth = UIScreen.main.bounds.size.width / 4
         let scrollRight = toIndex > fromIndex
-        let offset = (scrollRight ? screenWidth / 4 : -screenWidth / 4)
+        let offset = (scrollRight ? screenWidth : -screenWidth)
         
         initializeToView(toView, isScrollRight: scrollRight, offSet: offset)
         
