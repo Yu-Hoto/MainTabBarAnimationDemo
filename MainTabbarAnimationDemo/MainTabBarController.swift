@@ -25,14 +25,12 @@ class MainTabBarController: UITabBarController {
         fromView.superview?.backgroundColor = UIColor.white
         
         guard let superview = fromView.superview else { return }
-        superview.layer.shouldRasterize = true
         superview.addSubview(toView)
         
         let screenWidth = UIScreen.main.bounds.size.width / 4
         let scrollRight = toIndex > fromIndex
         let offset = (scrollRight ? screenWidth : -screenWidth)
-        
-        initializeToView(toView, isScrollRight: scrollRight, offSet: offset)
+        toView.alpha = 0
         
         UIView.animate(withDuration: 0.25, delay: 0.0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [.curveEaseOut, .allowAnimatedContent], animations: {
             
@@ -51,10 +49,6 @@ class MainTabBarController: UITabBarController {
                 self.selectedIndex = toIndex
             })
         })
-    }
-    
-    func initializeToView(_ toView: UIView, isScrollRight: Bool, offSet: CGFloat) {
-        toView.alpha = 0
     }
 }
 
