@@ -11,57 +11,58 @@ class MainTabBarController: UITabBarController {
         
         super.viewDidLoad()
         self.delegate = self
-    }
-    
-    func animateToTab(_ toIndex: Int) {
-        
-        guard let tabViewControllers = self.viewControllers,
-            let toView = tabViewControllers[toIndex].view,
-            let selectedViewController = selectedViewController,
-            let fromView = selectedViewController.view,
-            let fromIndex = tabViewControllers.firstIndex(of: selectedViewController),
-            toIndex != fromIndex
-        else { return }
-        fromView.superview?.backgroundColor = UIColor.white
-        
-        guard let superview = fromView.superview else { return }
-        superview.addSubview(toView)
-        
-        let screenWidth = UIScreen.main.bounds.size.width / 4
-        let scrollRight = toIndex > fromIndex
-        let offset = (scrollRight ? screenWidth : -screenWidth)
-        toView.alpha = 0
-        
-        UIView.animate(withDuration: 0.25, delay: 0.0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [.curveEaseOut, .allowAnimatedContent], animations: {
-            
-            fromView.alpha = 0
-            fromView.center.x = fromView.center.x - offset
-        }, completion: { _ in
-            
-            toView.center.x = toView.center.x + offset
-            UIView.animate(withDuration: 0.25, delay: 0.0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [.curveEaseIn, .allowAnimatedContent], animations: {
-                
-                toView.alpha = 1
-                toView.center.x = toView.center.x - offset
-            }, completion: { _ in
-                
-                fromView.removeFromSuperview()
-                self.selectedIndex = toIndex
-            })
-        })
+        view.backgroundColor = UIColor.systemBackground
     }
 }
 
 extension MainTabBarController: UITabBarControllerDelegate {
     
-    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        let tabViewControllers = tabBarController.viewControllers!
-        guard let toIndex = tabViewControllers.firstIndex(of: viewController) else {
-            return false
-        }
+    func tabBarController(_ tabBarController: UITabBarController, animationControllerForTransitionFrom fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        guard
+            let viewControllers = tabBarController.viewControllers,
+            let fromIndex = viewControllers.firstIndex(of: fromVC),
+            let toIndex = viewControllers.firstIndex(of: toVC)
+        else { return nil }
         
-        animateToTab(toIndex)
+        let scrollRight = toIndex > fromIndex
         
-        return true
+        return TabBarAnimatedTransitioning(scrollRight)
+    }
+}
+
+final class TabBarAnimatedTransitioning: NSObject, UIViewControllerAnimatedTransitioning {
+    
+    let scrollRight: Bool
+    
+    init(_ scrollRight: Bool) {
+        self.scrollRight = scrollRight
+    }
+    
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+        return 0.3
+    }
+    
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+        guard
+            let fromView = transitionContext.view(forKey: UITransitionContextViewKey.from),
+            let toView = transitionContext.view(forKey: UITransitionContextViewKey.to)
+        else { return }
+        
+        transitionContext.containerView.addSubview(toView)
+        
+        let screenWidth = UIScreen.main.bounds.size.width / 4
+        let offset = (scrollRight ? screenWidth : -screenWidth)
+        toView.alpha = 0
+        toView.center.x += offset
+        
+        UIView.animate(withDuration: transitionDuration(using: transitionContext), delay: 0.0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: [.curveEaseInOut], animations: {
+            
+            fromView.alpha = 0
+            fromView.center.x = fromView.center.x - offset
+            toView.alpha = 1
+            toView.center.x = toView.center.x - offset
+        }, completion: {
+            transitionContext.completeTransition($0)
+        })
     }
 }
